@@ -1,0 +1,21 @@
+---
+title: "Generic Initialization Script For Projects"
+author: "Peter von Rohr"
+date: "5 Feb 2015"
+output: html_document
+---
+
+Whenever a new project is started, a set of standard tasks must be executed. The project can be a software programming project, a documentation project or a project to find bugs in an existing program. No matter what project one wants to start, there is a need for a project specific location in the form of a directory where one can put all materials like source files, reference documentation, screen shots, etc...
+
+
+## What we have so far
+The set of projects that one is working on can be grouped into classes of projects. Projects within the same class share the core properties, i.e., the most important characteristics of different projects within the same class are the same or at least have a high similarity. 
+
+Starting new projects requires to perform a set of standard tasks. Since those tasks are standard and to some extend repetitive, they should be automated.
+
+## What we want to have
+Based on the above stated project classification and based on the need for an automated process of initializing a project, we want a flexible tools that creates new project instances for the most important classes of projects. 
+
+
+## Implementation
+Because the problem definition already led us to a classification system, it should be advantegous to build our tool using an object-oriented approach. 
