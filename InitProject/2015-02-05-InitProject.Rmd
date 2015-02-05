@@ -18,4 +18,6 @@ Based on the above stated project classification and based on the need for an au
 
 
 ## Implementation
-Because the problem definition already led us to a classification system, it should be advantegous to build our tool using an object-oriented approach. 
+Because the problem definition already led us to a classification system, it should be advantegous to build our tool using an object-oriented approach. In object-oriented programming everything is organized in classes. A class is a description of the properties of 
+
+In R, there are different systems available for representing classes and methods. 
