@@ -18,6 +18,28 @@ Based on the above stated project classification and based on the need for an au
 
 
 ## Implementation
-Because the problem definition already led us to a classification system, it should be advantegous to build our tool using an object-oriented approach. In object-oriented programming everything is organized in classes. A class is a description of the properties of 
+Because the problem definition already led us to a classification system, it should be advantegous to build our tool using an object-oriented approach. In object-oriented programming everything is organized in classes. A class is a description of the common properties of a set of objects. 
 
-In R, there are different systems available for representing classes and methods. 
+In R, there are different systems available for representing classes and methods. Traditionally there have been two systems for object-oriented programming in R. 
+
+1. `S3` is the older system. It shows great flexibility in how systems of objects are grouped together into classes and how methods which are specialized functions operate on those objects. The downside of this flexibility is the lack of formal definitions of classes. The `S3` system is described in section 5 of the R Language Definition. 
+
+2. `S4` is the more formal system. Basic documentation on `S4` classes and methods can be obtained via the help files
+
+```{r}
+?Classes
+?Methods
+```
+
+Recently, a package with a new class system called `R6` has been developed. Appearently `R6` tends to be more like other compiled object-oriented languages such as `Java` and `C++`. 
+
+There are great tutorials available on object oriented programming in R. Let me just mention of few of them
+
+* [Advanced R](http://adv-r.had.co.nz/OO-essentials.html) by Hadley Wickham has a chapter entitled `OO field guide` on the different object-oriented systems in R.
+* [R Tutorial](http://www.cyclismo.org/tutorial/R/index.html) by Kelly black shows great examples on how to define classes and methods and how to instantiate objects from these classes. 
+* [A (Not So) Short Introduction to S4](http://cran.r-project.org/doc/contrib/Genolini-S4tutorialV0-5en.pdf) gives an introduction to the S4 system which is available on CRAN. 
+
+
+
+
+
