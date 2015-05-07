@@ -194,5 +194,25 @@ DiagrammeR::grViz("
 From the above figure it is clear that the world-wide web takes a central role in teaching. Besides just being a storage where information can be published, it also provides great tools which support teaching activities.
 
 ### SageMathCloud
-One such tool is SageMathCloud (SMC). SMC is based on Sage which is developed by William Stein as an open source alternative to Maple, Mathematica, Magma, and MATLAB. It started out as a standalone application, but very soon, it also provided a version in the cloud which is termed SMC. The advantage of SMC is its very advanced collaborative features such as synchronous editing of so-called Sage worksheets. In principle Sage worksheets are the program source files for the Sage language. A second advantage of SMC is that it can be evaluated, tested and used without installing anything at all. The only requirements for SMC is a browser and a connection to the internet. This is extremely convenient for MS windows users, because the Sage application can only be used inside a virtual machine which is a little cumbersome to get it to fly. 
+One such tool is SageMathCloud ([SMC](https://cloud.sagemath.com/)). SMC is based on [Sage](http://sagemath.org/) which is developed by William Stein as an open source alternative to Maple, Mathematica, Magma, and MATLAB. It started out as a standalone application, but very soon, it also provided a version in the cloud which is termed SMC. The advantage of SMC is its very advanced collaborative features such as synchronous editing of so-called Sage worksheets. In principle Sage worksheets are the program source files for the Sage language. A second advantage of SMC is that it can be evaluated, tested and used without installing anything at all. The only requirements for SMC is a browser and a connection to the internet. This is extremely convenient for MS windows users, because the Sage application can only be used inside a virtual machine which is a little cumbersome to get it to fly. 
+
+### Getting Started with SMC
+The first thing one has to do is to create an account. This can be done from the SMC website available at [https://cloud.sagemath.com](https://cloud.sagemath.com). 
+
+![SMCLogin](pic/SMCLogin.png)
+
+There are two possibilities
+
+1. you create a fresh account for SMC alone or
+2. one uses an existing account from other services shown on the login page
+
+Once you are logged in, you can see the list of projects, you have previously worked on. For first time users this list will be empty. 
+
+![SMCProjectList](pic/SMCProjectList.png)
+
+When logging in the first time, the only thing that can be done, is to create a new project clicking on the `Create New Project` button. 
+
+
+
+
 
