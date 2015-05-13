@@ -5,6 +5,13 @@ date: "7 May 2015"
 output: html_document
 ---
 
+```{r, echo=FALSE}
+### # status information about publication status and image links
+sStatus <- "draft"
+sImageSourceDir <- "pic"
+sImageBaseUrl <- "http://charlotte-ngs.github.io/img/2015-05-07-ComputationMeetsTheCloud"
+```
+
 This post introduces the potential synergies of computer algebra and cloud computing.
 
 ## Terminology
