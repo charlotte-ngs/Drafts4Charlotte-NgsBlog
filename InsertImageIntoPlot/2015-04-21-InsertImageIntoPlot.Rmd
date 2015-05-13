@@ -1,0 +1,51 @@
+---
+title: "Insert An Image Into A Plot"
+author: "Peter von Rohr"
+date: "21. April 2015"
+output:
+  pdf_document:
+    keep_tex: yes
+---
+
+
+## Basic Version
+The purpose of this document is to show some possibilities of how to include an image into a ggplot. The material shown here is based on http://stackoverflow.com/questions/9917049/inserting-an-image-to-ggplot2. 
+
+The basic example is to include the R-logo in the background of a ggplot. 
+
+
+```{r}
+### # installing required packages
+for (p in c("png","grid","ggplot2")) {
+  if (!is.element(p, installed.packages())) {
+    install.packages(p)
+  }
+}
+### # loading packages
+library(png)
+library(grid)
+library(ggplot2)
+### # read png image
+img <- readPNG(system.file("img", "Rlogo.png", package="png"))
+g <- rasterGrob(img, interpolate=TRUE)
+### # draw the qplot
+qplot(1:10, 1:10, geom="blank") +
+  annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) +
+  geom_point()
+
+```
+
+
+## Smaller Image
+The image can also be insterted as a smaller version at a given position specified by the position arguments to `annotation_custom`
+
+```{r}
+### # draw the qplot
+qplot(1:10, 1:10, geom="blank") +
+  annotation_custom(g, xmin=2, xmax=5, ymin=7, ymax=10) +
+  geom_point()
+
+```
+
+## More elaborate stuff
+On the site http://stackoverflow.com/questions/12463691/inserting-an-image-to-ggplot-outside-the-chart-area there is a more elaborate example
