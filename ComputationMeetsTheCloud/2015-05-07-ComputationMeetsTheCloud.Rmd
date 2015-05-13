@@ -8,8 +8,22 @@ output: html_document
 ```{r, echo=FALSE}
 ### # status information about publication status and image links
 sStatus <- "draft"
+sThisPost <- "2015-05-07-ComputationMeetsTheCloud"
+sGitHome <- "C:/Daten/GitHub"
+sBlogDir <- file.path(sGitHome,"charlotte-ngs.github.io")
 sImageSourceDir <- "pic"
-sImageBaseUrl <- "http://charlotte-ngs.github.io/img/2015-05-07-ComputationMeetsTheCloud"
+sImageBaseUrl <- paste("http://charlotte-ngs.github.io/img/", sThisPost, sep = "")
+### # function that generates the image links depending on status
+sGenerateImgLink <- function(psImgFn, psImgText = psImgFn, 
+                             psImgSrcDir = sImageSourceDir,
+                             psImgBaseUrl = sImageBaseUrl,
+                             psStatus = sStatus)
+{
+  sResultImgLink <- paste("![", psImgText, "]","(", sep = "", collapse = "")
+  sImgUrl <- ifelse (psStatus == "publish", paste(psImgBaseUrl, psImgFn, sep="/"), paste(psImgSrcDir, psImgFn, sep="/"))
+  sResultImgLink <- paste(sResultImgLink, sImgUrl, ")", sep = "", collapse = "")
+  return(sResultImgLink)
+}
 ```
 
 This post introduces the potential synergies of computer algebra and cloud computing.
@@ -18,7 +32,7 @@ This post introduces the potential synergies of computer algebra and cloud compu
 `Computer algebra systems` (CAS) are software programs that are able to manipulate symbolic mathematical formulas. CAS clearly specialize in symbolic computation which sets them apart from the systems that are mainly used for numeric computation such as `Matlab`, `R`, `Julia` and others. 
 
 ## History
-The development of CAS started in the 1960s. Currently `Maple` and `Mathematica` are the most widely known CAS. The were first released in the 1980s. [Wikipedia](http://en.wikipedia.org/wiki/Computer_algebra_system) gives a nice overview of CAS and their history. 
+The development of CAS started in the 1960s. Currently [`Maple`](http://www.maplesoft.com) and [`Mathematica`](http://www.wolfram.com/mathematica/) are the most widely known CAS. The were first released in the 1980s. [Wikipedia](http://en.wikipedia.org/wiki/Computer_algebra_system) gives a nice overview of CAS and their history. 
 
 ## Technical Aspects
 Traditionally CAS like many other tools are installed as standalone applications on local computers. This imposes high costs of resources on development teams to ensure portability across all different computer platforms.
@@ -30,15 +44,26 @@ With the advent of cloud computing where applications do not have to be installe
 ## Getting Started With SMC
 As soon as one has signed up for an account on SMC, one is ready to sign in and SMC presents the starting page which is initially empty. The screen shot below shows a starting page with already existing projects. 
 
-![SMC start screen](pic/smc_start_screen.png)
+```{r, echo=FALSE, results='asis'}
+sPicUrl <- sGenerateImgLink(psImgFn = "smc_start_screen.png", psImgText = "SMC start screen")
+cat(sPicUrl, "\n")
+```
 
 When logging in for the first time, the only thing that can be done is creating a new project by hitting the `Create New Project...` button in the middle of the page (see screen shot below). 
 
-![Create New Project Button](pic/CreateNewProjectButton.png)
+```{r, echo=FALSE, results='asis'}
+sPicUrl <- sGenerateImgLink(psImgFn = "CreateNewProjectButton.png", psImgText = "Create New Project Button")
+cat(sPicUrl, "\n")
+```
+
 
 After clicking the `Create New Project...` button, a popup appears where the user has to specify the name of the new project and its description.
 
-![Create New Project Popup](pic/CreateNewProjectPopUp.png)
+```{r, echo=FALSE, results='asis'}
+sPicUrl <- sGenerateImgLink(psImgFn = "CreateNewProjectPopUp.png", psImgText = "Create New Project Popup")
+cat(sPicUrl, "\n")
+```
+
 
 Inside a project, one can either create or upload files or one can add collaborators to the project. SMC allows you to create very different types of files. Those types can be
 
