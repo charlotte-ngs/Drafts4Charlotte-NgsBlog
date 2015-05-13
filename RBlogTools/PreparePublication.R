@@ -1,0 +1,17 @@
+###
+###
+###
+###   Purpose:   Scratch prepare draft blog posts for publication
+###   started:   2015/05/13 (pvr)
+###
+### #############################################################
+###
+
+
+### # working directory
+sCurrentWorkDir <- "~/Data/Projects/GitHub/Drafts4Charlotte-NgsBlog/ComputationMeetsTheCloud"
+
+### # change working directory to sCurrentWorkDir
+setwd(sCurrentWorkDir)
+
+### # for a given Rmarkdown input file do the processing
