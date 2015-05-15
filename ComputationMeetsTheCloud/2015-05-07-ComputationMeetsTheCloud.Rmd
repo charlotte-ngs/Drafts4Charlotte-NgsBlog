@@ -3,27 +3,58 @@ title: "Computation Meets The Cloud"
 author: "Peter von Rohr"
 date: "7 May 2015"
 output: html_document
+# md_document
+#  html_document:
+#    keep_md: yes
 ---
 
 ```{r, echo=FALSE}
 ### # status information about publication status and image links
+#sStatus <- "publish"
 sStatus <- "draft"
 sThisPost <- "2015-05-07-ComputationMeetsTheCloud"
-sGitHome <- "C:/Daten/GitHub"
-sBlogDir <- file.path(sGitHome,"charlotte-ngs.github.io")
+#sGitHome <- "C:/Daten/GitHub"
+sGitHome <- "/Users/peter/Data/Projects/GitHub"
+sPostImgDir <- file.path(sGitHome,"charlotte-ngs.github.io/img", sThisPost)
 sImageSourceDir <- "pic"
 sImageBaseUrl <- paste("http://charlotte-ngs.github.io/img/", sThisPost, sep = "")
 ### # function that generates the image links depending on status
 sGenerateImgLink <- function(psImgFn, psImgText = psImgFn, 
                              psImgSrcDir = sImageSourceDir,
                              psImgBaseUrl = sImageBaseUrl,
+                             psPostImgDir = sPostImgDir, 
                              psStatus = sStatus)
 {
+  sImgFile <- file.path(psImgSrcDir, psImgFn)
+  ### # if the given image file does not exist, we stop here
+  stopifnot(file.exists(sImgFile))
   sResultImgLink <- paste("![", psImgText, "]","(", sep = "", collapse = "")
-  sImgUrl <- ifelse (psStatus == "publish", paste(psImgBaseUrl, psImgFn, sep="/"), paste(psImgSrcDir, psImgFn, sep="/"))
+  if (psStatus == "publish") {
+    ### # paste together base url and image file name
+    sImgUrl <- paste(psImgBaseUrl, psImgFn, sep="/")
+  } else {
+    sImgUrl <- sImgFile
+  }
   sResultImgLink <- paste(sResultImgLink, sImgUrl, ")", sep = "", collapse = "")
   return(sResultImgLink)
 }
+### # function to move images into post image directory and push them to github
+MovePushImg <- function(psImgSrcDir = sImageSourceDir,
+                        psImgExt = ".png",
+                        psPostImgDir = sPostImgDir, 
+                        psStatus = sStatus) {
+  ### # check whether post image directory exists, if not create it
+  if (! dir.exists(psPostImgDir)) dir.create(psPostImgDir)
+
+  ### # loop over all image files in psImgSrcDir
+  vecImgFiles <- list.files(path = psImgSrcDir, patten = psImgExt)
+  for (f in vecImgFiles) {
+    file.copy(from = file.path(psImgSrcDir, f), to = file.path(psPostImgDir, f))  
+  }
+  ### # here we have to push the committed images to the github repo
+  
+}
+
 ```
 
 This post introduces the potential synergies of computer algebra and cloud computing.
@@ -65,7 +96,7 @@ cat(sPicUrl, "\n")
 ```
 
 
-Inside a project, one can either create or upload files or one can add collaborators to the project. SMC allows you to create very different types of files. Those types can be
+Inside a project, one can either create or upload files or one can add collaborators to the project. SMC allows you to create very different types of files. Those types can be a
 
 * Sage worksheet
 * Terminal
@@ -78,6 +109,6 @@ Inside a project, one can either create or upload files or one can add collabora
 * Phython program
 * Folder
 
-Appearently, SMC holds up the old unix tradition that really everything is a file.
+Appearently, SMC holds up the old unix tradition that really everything is a file. The above choice of file types are listed when clicking on the `New` button. When clicking on the link in the middle of the project page, an even larger choice of different file types is listed. 
 
 

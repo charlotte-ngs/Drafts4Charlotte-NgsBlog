@@ -15,3 +15,6 @@ sCurrentWorkDir <- "~/Data/Projects/GitHub/Drafts4Charlotte-NgsBlog/ComputationM
 setwd(sCurrentWorkDir)
 
 ### # for a given Rmarkdown input file do the processing
+
+### # steps for git push inside a script
+# git push --repo https://charlotte-ngs:SH-CmwzK129@github.com/charlotte-ngs/Drafts4Charlotte-NgsBlog.git
