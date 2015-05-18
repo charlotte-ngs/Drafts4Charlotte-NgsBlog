@@ -18,3 +18,7 @@ setwd(sCurrentWorkDir)
 
 ### # steps for git push inside a script
 # git push --repo https://charlotte-ngs:SH-CmwzK129@github.com/charlotte-ngs/Drafts4Charlotte-NgsBlog.git
+
+### # added ssh-key according to https://help.github.com/articles/generating-ssh-keys/
+### # and changed repo type in origin from https to ssh according to: https://help.github.com/articles/changing-a-remote-s-url/
+

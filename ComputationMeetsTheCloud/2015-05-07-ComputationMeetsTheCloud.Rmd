@@ -46,15 +46,22 @@ MovePushImg <- function(psImgSrcDir = sImageSourceDir,
   ### # check whether post image directory exists, if not create it
   if (! dir.exists(psPostImgDir)) dir.create(psPostImgDir)
 
+  ### # start preparing the git push command
+  sGitPushCmd <- paste("cd ", psPostImgDir, ";", sep = "")
+  sGitPushCmd <- paste(sGitPushCmd, "git commit -a -m\"Committing post image\"", sep = "")
+  
   ### # loop over all image files in psImgSrcDir
-  vecImgFiles <- list.files(path = psImgSrcDir, patten = psImgExt)
+  vecImgFiles <- list.files(path = psImgSrcDir, pattern = psImgExt)
   for (f in vecImgFiles) {
     file.copy(from = file.path(psImgSrcDir, f), to = file.path(psPostImgDir, f))  
+    sGitPushCmd <- paste(sGitPushCmd, " ", f, sep = "")
   }
   ### # here we have to push the committed images to the github repo
+  sGitPushCmd <- paste(sGitPushCmd,";", "git push origin master", sep ="")
+  cat("push command: ", sGitPushCmd)
   
 }
-
+MovePushImg()
 ```
 
 This post introduces the potential synergies of computer algebra and cloud computing.
