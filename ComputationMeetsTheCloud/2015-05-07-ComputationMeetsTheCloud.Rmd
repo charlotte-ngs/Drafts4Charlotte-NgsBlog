@@ -58,14 +58,18 @@ MovePushImg <- function(psImgSrcDir = sImageSourceDir,
   }
   ### # here we have to push the committed images to the github repo
   sGitPushCmd <- paste(sGitPushCmd,";", "git commit -m\"Committing post image\";git push origin master", sep ="")
-  cat("push command: ", sGitPushCmd)
+  ### # run the git command
   system(command = sGitPushCmd)
 }
 if (sStatus == "publish") MovePushImg()
 
 ```
 
-This post introduces the potential synergies of computer algebra and cloud computing.
+This post introduces the potential synergies of computer algebra and cloud computing. Recently, there has been a debate on some [blogs](http://www.r-bloggers.com/choosing-r-or-python-for-data-analysis-an-infographic) whether one should choose `R` or `python` for data analysis. In what follows, I might argue to consider the following points:
+
+* In case, data analysis involves the derivation of symbolic formula, it is worthwhile considering a computer algebra system (CAS)
+* Systems that are available via the cloud such as SMC have the great advantage that they can be used without any burden of application installation.
+
 
 ## Terminology
 `Computer algebra systems` (CAS) are software programs that are able to manipulate symbolic mathematical formulas. CAS clearly specialize in symbolic computation which sets them apart from the systems that are mainly used for numeric computation such as `Matlab`, `R`, `Julia` and others. 
