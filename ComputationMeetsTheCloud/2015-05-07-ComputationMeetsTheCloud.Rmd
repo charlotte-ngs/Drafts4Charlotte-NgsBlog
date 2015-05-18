@@ -13,8 +13,8 @@ output: html_document
 #sStatus <- "publish"
 sStatus <- "draft"
 sThisPost <- "2015-05-07-ComputationMeetsTheCloud"
-#sGitHome <- "C:/Daten/GitHub"
-sGitHome <- "/Users/peter/Data/Projects/GitHub"
+sGitHome <- "C:/Daten/GitHub"
+#sGitHome <- "/Users/peter/Data/Projects/GitHub"
 sPostImgDir <- file.path(sGitHome,"charlotte-ngs.github.io/img", sThisPost)
 sImageSourceDir <- "pic"
 sImageBaseUrl <- paste("http://charlotte-ngs.github.io/img/", sThisPost, sep = "")
@@ -48,7 +48,7 @@ MovePushImg <- function(psImgSrcDir = sImageSourceDir,
 
   ### # start preparing the git push command
   sGitPushCmd <- paste("cd ", psPostImgDir, ";", sep = "")
-  sGitPushCmd <- paste(sGitPushCmd, "git commit -a -m\"Committing post image\"", sep = "")
+  sGitPushCmd <- paste(sGitPushCmd, "git add", sep = "")
   
   ### # loop over all image files in psImgSrcDir
   vecImgFiles <- list.files(path = psImgSrcDir, pattern = psImgExt)
@@ -57,11 +57,12 @@ MovePushImg <- function(psImgSrcDir = sImageSourceDir,
     sGitPushCmd <- paste(sGitPushCmd, " ", f, sep = "")
   }
   ### # here we have to push the committed images to the github repo
-  sGitPushCmd <- paste(sGitPushCmd,";", "git push origin master", sep ="")
+  sGitPushCmd <- paste(sGitPushCmd,";", "git commit -m\"Committing post image\";git push origin master", sep ="")
   cat("push command: ", sGitPushCmd)
-  
+  system(command = sGitPushCmd)
 }
-MovePushImg()
+if (sStatus == "publish") MovePushImg()
+
 ```
 
 This post introduces the potential synergies of computer algebra and cloud computing.
