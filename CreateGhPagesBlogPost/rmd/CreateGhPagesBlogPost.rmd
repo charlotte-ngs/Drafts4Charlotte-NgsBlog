@@ -1,0 +1,67 @@
+---
+title: "Create A Blog Post on Github Pages"
+author: "Peter von Rohr"
+date: "24. August 2015"
+output: html_document
+---
+
+
+## Abstract
+This document shows how a blog post on github pages can be created. 
+
+
+## Introduction
+[Github pages](https://pages.github.com/) are a platform for blog posts which uses github as 
+repository for source files. Source files are written in markdown and [jekyll](http://jekyllrb.com/) is used to translate markdown sources into static html pages. 
+
+
+## Aim
+We want to design a function that sets up a blog post. The function takes as input, the root directory for the blog posts, the name of the source file, the title and the author of the post.
+
+
+## A First Trial
+The function is called `createGhPagesBlogPost()` and looks as follows. 
+
+```{r CreateGhPagesBlogPost}
+createGhPagesBlogPost <- function(psBlogTitle, 
+                                  psBlogAuthor, 
+                                  psBlogName, 
+                                  psRootDir = getwd(),
+                                  psImgDir = NULL){
+  sBlogFileStem <- paste(Sys.Date(), "-", psBlogName, sep = "", collapse = "")
+  sBlogFileName <- paste(sBlogFileStem, ".md", sep = "", collapse = "")
+  sBlogFileDir <- file.path(psRootDir, "_posts")
+  sBlogFilePath <- file.path(sBlogFileDir, sBlogFileName)
+  ### # if the blog post file already exists, we are doing nothing
+  if (!file.exists(sBlogFilePath)) {
+    cat("---\ntitle: ", psBlogTitle, 
+        "\nauthor: ", psBlogAuthor, 
+        "\ndate: ", format(Sys.time(), "%d %B %Y"),
+        "\noutput: html_document\n---\n", file = sBlogFilePath)
+    cat(" * Created new blog post: ", sBlogFileName, "\n   in directory: ", sBlogFileDir, "\n")
+  } else {
+    cat(" * Blog post: ", sBlogFileName, "\n   in directory: ", sBlogFileDir, " already exists\n")
+  }
+  ### # if an image directory was specified, we create it
+  if (!is.null(psImgDir)) {
+    sImgDir <- file.path(psImgDir, sBlogFileStem)
+    if (!dir.exists(sImgDir)) {
+      dir.create(sImgDir)
+      cat(" * Created Image directory: ", sImgDir, "\n")
+    } else {
+      cat(" * Image directory: ", sImgDir, " already exists\n")
+    }    
+  }
+
+}
+```
+
+An example call to that function is shown below
+
+```{r CreateGhPagesBlogPostCall}
+createGhPagesBlogPost(psBlogTitle  = "Eclipse CDT As Alternative To XCode On The Mac", 
+                      psBlogAuthor = "Peter von Rohr", 
+                      psBlogName   = "EclipseCdtXcodeAlt", 
+                      psRootDir    = "C:/Daten/GitHub/charlotte-ngs.github.io",
+                      psImgDir     = "C:/Daten/GitHub/charlotte-ngs.github.io/img")
+```
