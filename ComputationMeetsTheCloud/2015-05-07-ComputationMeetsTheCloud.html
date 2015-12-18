@@ -67,8 +67,12 @@ img {
 </div>
 
 
-<pre><code>## push command:  cd /Users/peter/Data/Projects/GitHub/charlotte-ngs.github.io/img/2015-05-07-ComputationMeetsTheCloud;git add CreateNewProjectButton.png CreateNewProjectPopUp.png smc_start_screen.png;git commit -m&quot;Committing post image&quot;;git push origin master</code></pre>
-<p>This post introduces the potential synergies of computer algebra and cloud computing.</p>
+<p>This post introduces the potential synergies of computer algebra and cloud computing for data analysis. Recently, there has been a debate on some <a href="http://www.r-bloggers.com/choosing-r-or-python-for-data-analysis-an-infographic">blogs</a> whether one should choose <code>R</code> or <code>python</code> for data analysis. Also <code>Julia</code> is among the systems that has been advocated by some data analysts.</p>
+<p>In what follows, I might argue to consider the following points:</p>
+<ul>
+<li>In case, data analysis involves the derivation of symbolic formula, it is worth while considering a computer algebra system (CAS). This allows to integrate the formula derivation into a literate programming framework.</li>
+<li>Systems that are available via the cloud such as <a href="http://cloud.sagemath.com">SageMathCloud</a> (SMC) have the great advantage that they can be used without installing any program. Furthermore, SMC provides additional features such as creating LaTeX documents.</li>
+</ul>
 <div id="terminology" class="section level2">
 <h2>Terminology</h2>
 <p><code>Computer algebra systems</code> (CAS) are software programs that are able to manipulate symbolic mathematical formulas. CAS clearly specialize in symbolic computation which sets them apart from the systems that are mainly used for numeric computation such as <code>Matlab</code>, <code>R</code>, <code>Julia</code> and others.</p>
@@ -105,6 +109,26 @@ img {
 <li>Folder</li>
 </ul>
 <p>Appearently, SMC holds up the old unix tradition that really everything is a file. The above choice of file types are listed when clicking on the <code>New</code> button. When clicking on the link in the middle of the project page, an even larger choice of different file types is listed.</p>
+</div>
+<div id="worksheets-notebooks-program-files-and-documents" class="section level2">
+<h2>Worksheets, Notebooks, Program Files and Documents</h2>
+<p>In the above list of files that can be created inside of a project, there is a group of items which are traditionally understood as files. Those can contain program code and/or text. The format of the content is determined by the type of document that they can be associated to, i.e. a LaTeX document contains text and LaTeX commands or a Python program contains Python code, etc.</p>
+<div id="latex-documents" class="section level3">
+<h3>LaTeX Documents</h3>
+<p>When creating a LaTeX document the window is devided into two halves where on the left side, one sees the LaTeX code and on the right side, a preview of the document is automatically shown. With that convenient feature, it is easy to verify the resulting document. Whenever there is a problem with compiling the LaTeX code, it is shown when clicking on the <code>Issues</code> tab.</p>
+</div>
+<div id="sage-worksheets" class="section level3">
+<h3>Sage Worksheets</h3>
+<p>The Sage worksheets and the Jupyter notebooks are built up by cells where each cell can either contain text or programming statements. These notebooks or worksheets are also known from other systems such as Maple or Mathematica.</p>
+</div>
+</div>
+<div id="special-case-files" class="section level2">
+<h2>Special Case Files</h2>
+<p>Terminals and folders are special cases of files. But really on a linux system they are also just files. Behind the scene of SMC, a project is just an account on a linux system. Hence when creating a new file of type <code>terminal</code> a shell on a linux system is opened.</p>
+</div>
+<div id="teaching-with-smc" class="section level2">
+<h2>Teaching With SMC</h2>
+<p>One of the above file types that can be created on SMC is a <code>Course</code>. This creates specialized infrastructure within a project which is helpful when teaching a course to students. In a companion post, these special features of SMC for teaching are going to be described.</p>
 </div>
 
 

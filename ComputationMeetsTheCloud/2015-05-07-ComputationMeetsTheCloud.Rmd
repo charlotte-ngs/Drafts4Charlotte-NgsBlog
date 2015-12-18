@@ -2,10 +2,9 @@
 title: "Computation Meets The Cloud"
 author: "Peter von Rohr"
 date: "7 May 2015"
-output: html_document
-# md_document
-#  html_document:
-#    keep_md: yes
+output: 
+  html_document: 
+    keep_md: yes
 ---
 
 ```{r, echo=FALSE}
@@ -13,62 +12,29 @@ output: html_document
 sStatus <- "publish"
 #sStatus <- "draft"
 sThisPost <- "2015-05-07-ComputationMeetsTheCloud"
+sThisPostMd <- paste0(sThisPost,".md")
 #sGitHome <- "C:/Daten/GitHub"
 sGitHome <- "/Users/peter/Data/Projects/GitHub"
 sPostImgDir <- file.path(sGitHome,"charlotte-ngs.github.io/img", sThisPost)
+sPostMdDir <- file.path(sGitHome,"charlotte-ngs.github.io/_posts")
 sImageSourceDir <- "pic"
 sImageBaseUrl <- paste("http://charlotte-ngs.github.io/img/", sThisPost, sep = "")
-### # function that generates the image links depending on status
-sGenerateImgLink <- function(psImgFn, psImgText = psImgFn, 
-                             psImgSrcDir = sImageSourceDir,
-                             psImgBaseUrl = sImageBaseUrl,
-                             psPostImgDir = sPostImgDir, 
-                             psStatus = sStatus)
-{
-  sImgFile <- file.path(psImgSrcDir, psImgFn)
-  ### # if the given image file does not exist, we stop here
-  stopifnot(file.exists(sImgFile))
-  sResultImgLink <- paste("![", psImgText, "]","(", sep = "", collapse = "")
-  if (psStatus == "publish") {
-    ### # paste together base url and image file name
-    sImgUrl <- paste(psImgBaseUrl, psImgFn, sep="/")
-  } else {
-    sImgUrl <- sImgFile
-  }
-  sResultImgLink <- paste(sResultImgLink, sImgUrl, ")", sep = "", collapse = "")
-  return(sResultImgLink)
-}
-### # function to move images into post image directory and push them to github
-MovePushImg <- function(psImgSrcDir = sImageSourceDir,
-                        psImgExt = ".png",
-                        psPostImgDir = sPostImgDir, 
-                        psStatus = sStatus) {
-  ### # check whether post image directory exists, if not create it
-  if (! dir.exists(psPostImgDir)) dir.create(psPostImgDir)
-
-  ### # start preparing the git push command
-  sGitPushCmd <- paste("cd ", psPostImgDir, ";", sep = "")
-  sGitPushCmd <- paste(sGitPushCmd, "git add", sep = "")
-  
-  ### # loop over all image files in psImgSrcDir
-  vecImgFiles <- list.files(path = psImgSrcDir, pattern = psImgExt)
-  for (f in vecImgFiles) {
-    file.copy(from = file.path(psImgSrcDir, f), to = file.path(psPostImgDir, f))  
-    sGitPushCmd <- paste(sGitPushCmd, " ", f, sep = "")
-  }
-  ### # here we have to push the committed images to the github repo
-  sGitPushCmd <- paste(sGitPushCmd,";", "git commit -m\"Committing post image\";git push origin master", sep ="")
-  ### # run the git command
-  system(command = sGitPushCmd)
-}
-if (sStatus == "publish") MovePushImg()
-
+### # check whether RGhpBlogTools is installed
+stopifnot(is.element("RGhpBlogTools", installed.packages()))
+### # set defaults
+RGhpBlogTools::SetRGhpBlogToolOptions(psImgSrcDir  = sImageSourceDir, 
+                                      psImgBaseUrl = sImageBaseUrl, 
+                                      psPostImgDir = sPostImgDir, 
+                                      psStatus     = sStatus)
+if (sStatus == "publish") RGhpBlogTools::MovePushImg()
 ```
 
-This post introduces the potential synergies of computer algebra and cloud computing. Recently, there has been a debate on some [blogs](http://www.r-bloggers.com/choosing-r-or-python-for-data-analysis-an-infographic) whether one should choose `R` or `python` for data analysis. In what follows, I might argue to consider the following points:
+This post introduces the potential synergies of computer algebra and cloud computing for data analysis. Recently, there has been a debate on some [blogs](http://www.r-bloggers.com/choosing-r-or-python-for-data-analysis-an-infographic) whether one should choose `R` or `python` for data analysis. Also `Julia` is among the systems that has been advocated by some data analysts. 
 
-* In case, data analysis involves the derivation of symbolic formula, it is worthwhile considering a computer algebra system (CAS)
-* Systems that are available via the cloud such as SMC have the great advantage that they can be used without any burden of application installation.
+In what follows, I might argue to consider the following points:
+
+* In case, data analysis involves the derivation of symbolic formula, it is worth while considering a computer algebra system (CAS). This allows to integrate the formula derivation into a literate programming framework.
+* Systems that are available via the cloud such as [SageMathCloud](http://cloud.sagemath.com) (SMC) have the great advantage that they can be used without installing any program. Furthermore, SMC provides additional features such as creating LaTeX documents.
 
 
 ## Terminology
@@ -88,14 +54,16 @@ With the advent of cloud computing where applications do not have to be installe
 As soon as one has signed up for an account on SMC, one is ready to sign in and SMC presents the starting page which is initially empty. The screen shot below shows a starting page with already existing projects. 
 
 ```{r, echo=FALSE, results='asis'}
-sPicUrl <- sGenerateImgLink(psImgFn = "smc_start_screen.png", psImgText = "SMC start screen")
+sPicUrl <- RGhpBlogTools::sGenerateImgLink(psImgFn = "smc_start_screen.png", 
+                                           psImgText = "SMC start screen")
 cat(sPicUrl, "\n")
 ```
 
 When logging in for the first time, the only thing that can be done is creating a new project by hitting the `Create New Project...` button in the middle of the page (see screen shot below). 
 
 ```{r, echo=FALSE, results='asis'}
-sPicUrl <- sGenerateImgLink(psImgFn = "CreateNewProjectButton.png", psImgText = "Create New Project Button")
+sPicUrl <- RGhpBlogTools::sGenerateImgLink(psImgFn = "CreateNewProjectButton.png", 
+                                           psImgText = "Create New Project Button")
 cat(sPicUrl, "\n")
 ```
 
@@ -103,7 +71,8 @@ cat(sPicUrl, "\n")
 After clicking the `Create New Project...` button, a popup appears where the user has to specify the name of the new project and its description.
 
 ```{r, echo=FALSE, results='asis'}
-sPicUrl <- sGenerateImgLink(psImgFn = "CreateNewProjectPopUp.png", psImgText = "Create New Project Popup")
+sPicUrl <- RGhpBlogTools::sGenerateImgLink(psImgFn = "CreateNewProjectPopUp.png", 
+                                           psImgText = "Create New Project Popup")
 cat(sPicUrl, "\n")
 ```
 
@@ -123,4 +92,21 @@ Inside a project, one can either create or upload files or one can add collabora
 
 Appearently, SMC holds up the old unix tradition that really everything is a file. The above choice of file types are listed when clicking on the `New` button. When clicking on the link in the middle of the project page, an even larger choice of different file types is listed. 
 
+
+## Worksheets, Notebooks, Program Files and Documents
+In the above list of files that can be created inside of a project, there is a group of items which are traditionally understood as files. Those can contain program code and/or text. The format of the content is determined by the type of document that they can be associated to, i.e. a LaTeX document contains text and LaTeX commands or a Python program contains Python code, etc. 
+
+### LaTeX Documents
+When creating a LaTeX document the window is devided into two halves where on the left side, one sees the LaTeX code and on the right side, a preview of the document is automatically shown. With that convenient feature, it is easy to verify the resulting document. Whenever there is a problem with compiling the LaTeX code, it is shown when clicking on the `Issues` tab. 
+
+### Sage Worksheets
+The Sage worksheets and the Jupyter notebooks are built up by cells where each cell can either contain text or programming statements. These notebooks or worksheets are also known from other systems such as Maple or Mathematica.
+
+
+## Special Case Files
+Terminals and folders are special cases of files. But really on a linux system they are also just files. Behind the scene of SMC, a project is just an account on a linux system. Hence when creating a new file of type `terminal` a shell on a linux system is opened. 
+
+
+## Teaching With SMC
+One of the above file types that can be created on SMC is a `Course`. This creates specialized infrastructure within a project which is helpful when teaching a course to students. In a companion post, these special features of SMC for teaching are going to be described.
 
