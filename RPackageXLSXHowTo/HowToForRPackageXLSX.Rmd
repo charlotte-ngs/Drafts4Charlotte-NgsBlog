@@ -1,0 +1,78 @@
+---
+title: "HowTo For R Package XLSX"
+author: "Peter von Rohr"
+date: "23. Dezember 2015"
+output: html_document
+---
+
+This is a simple `HowTo` document for working with R package `xlsx`. This document contains a simple working example of how to create an xlsx-file without even using MS-Excel. All that is written here is based on a blog-post available from 
+
+* https://tradeblotter.wordpress.com/2013/05/02/writing-from-r-to-excel-with-xlsx/ or
+* http://www.r-bloggers.com/writing-from-r-to-excel-with-xlsx/
+
+
+# Step-by-Step
+This section gives a step-by-step introduction on how to create a new workbook which will eventually be saved into an xlsx-file using the R-package `xlsx`. The content of the workbook can be any dataframe. As an example, Anderson's iris dataset is going to be used here.
+
+## Step 1: Installation
+If you have not already done so, you should install the R-package `xlsx` using the following command at the R-console. 
+
+```{r InstallPackage, eval=FALSE}
+install.packages(pkgs = "xlsx")
+```
+
+## Step 2: Creating a new workbook
+A new workbook is created. This new workbook will be used to store the content of the dataframe.
+
+```{r CreateNewWorkbook}
+require(xlsx)
+outwb <- createWorkbook()
+# define cell styles
+csSheetTitle <- CellStyle(outwb) + Font(outwb, heightInPoints=14, isBold=TRUE)
+csTableRowNames <- CellStyle(outwb) + Font(outwb, isBold=TRUE)
+csTableColNames <- CellStyle(outwb) + Font(outwb, isBold=TRUE) + 
+                     Alignment(wrapText=TRUE, h="ALIGN_CENTER") +   
+                     Border(color="black", position=c("TOP", "BOTTOM"), pen=c("BORDER_THIN", "BORDER_THICK"))
+csSepColumn <- CellStyle(outwb, dataFormat = DataFormat("0.0"))
+csPetColumn <- CellStyle(outwb, dataFormat = DataFormat("0.00"))
+```
+
+So far, we have just create cell styles for the title, the row names, the column names and some specialized columns. The next step will be to assign the cell styles to the different columns
+
+## Step 3: Assign cell styles to columns
+```{r AssignCellStyle}
+iris.colSep <- list(
+  '2' = csSepColumn,
+  '3' = csSepColumn)
+iris.colPet <- list(
+  '4' = csPetColumn,
+  '5' = csPetColumn)
+```
+
+## Step 4: Create a sheet
+A new sheet to be added to the workbook is defined. Then the dataframe is added to the sheet
+
+```{r CreateSheet}
+sheet <- createSheet(wb = outwb, sheetName = "Iris Data")
+data("iris")
+addDataFrame(iris, sheet, startRow = 3, startColumn = 1, 
+             colStyle = c(iris.colSep, iris.colPet),
+             colnamesStyle = csTableColNames, 
+             rownamesStyle=csTableRowNames)
+setColumnWidth(sheet,colIndex=c(2:5),colWidth=13)
+setColumnWidth(sheet,colIndex=6,colWidth=16)
+```
+
+## Step 5: Create the sheet title
+```{r CreateSheetTitle}
+rows <- createRow(sheet, rowIndex=1)
+sheetTitle <- createCell(rows, colIndex=1)
+setCellValue(sheetTitle[[1,1]], "Anderson's Iris Data")
+setCellStyle(sheetTitle[[1,1]], csSheetTitle)
+```
+
+## Step 6: Save the workbook to a file
+```{r SaveWorkbook}
+saveWorkbook(wb = outwb, file = "IrisData.xlsx")
+```
+
