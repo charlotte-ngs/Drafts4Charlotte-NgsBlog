@@ -1,13 +1,13 @@
 ---
-title: "RStudio As A C++ IDE"
+title: "RStudio As An IDE For C++"
 author: "Peter von Rohr"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 ---
+
+```{r DocumentSetup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, results = 'asis')
+```
 
 ```{r ConnectionStatus, echo=FALSE,results='hide'}
 bOnLine <- TRUE
@@ -35,13 +35,13 @@ showCppCode <- function(psCppFn){
 }
 ```
 
-# Disclaimer
-The aim of this post is to see whether RStudio can be used as an IDE for C/C++
+## Disclaimer
+The aim of this post is to see whether RStudio can be used as an IDE (Integrated Development Environment) for C/C++
 
-# Introduction
-C++ is a widely used compiled language. As in any other compiled language, software development is structured as a write-compile-link-executed-debug loop. Except for the writing part, IDEs (Integrated Development Environments) can help software developers to ease the burdon of all other steps of the development cycle. 
+## Introduction
+C++ is a widely used compiled language. As in any other compiled language, software development is structured as a write-compile-link-execute-debug loop. Except for the writing part, IDEs (Integrated Development Environments) can help software developers to ease the burdon of all other steps of the development cycle. 
 
-## Known IDEs for C++
+### Known IDEs for C++
 The choice of IDE can depend on the operating system on which the programs are written and executed. On Mac OS X, XCode is probably the most widely used IDE. 
 
 ![Xcode Logo](XcodeLogo.png)
@@ -50,30 +50,41 @@ On Linux there is Kdevelop coming with the KDE window manager. DevC++ is a very 
 
 ![Eclipse Logo](EclipseLogo.png)
 
-## Downside of IDEs
-The downside of most IDEs is that they are rather heavy weight. Most users who just want to write small command line programs are lost in the massive number of features offered by the described IDEs. 
+Similarly to Eclipse, there exist C++ plugins for NetBeans which is the open source IDE originally developed by SUN and now distributed by Oracle.
+
+```{r NetBeansLogo, fig.show=TRUE}
+rmddochelper::insertOdgAsPng(psOdgFileStem = "NetBeansLogo")
+```
 
 
-# Alternatives
+### Downside of IDEs
+The downside of most IDEs is that they are rather heavy weight. Most users who just want to write small command line programs are lost in the massive number of features offered by the above listed IDEs. 
+
+
+## Alternatives
 Alternatives to heavy-weight IDEs are slim editors like TextWrangler on the Mac or Notepad++ on Windows. Those editors provide a small set of functionalities but it feels that they are easier to use than the large-scale IDEs. 
 
 
-# RStudio - a small IDE
+## RStudio - a small IDE
 Recently, RStudio has become quite well known in the community of R developers. Since R has several interfaces to be used with C/C++ it is quite likely that R developers also write C/C++ code. 
 
 The aim of this post is to make a few tests and check how useful RStudio might be as an IDE for C/C++. Our tests are based on a few assumptions which might affect the relevance of the tests and the usefulnes of this post. Here are our assumptions
 
-1. Development of C/C++ code using RStudio cannot be done without R. 
-2. The R package ``Rcpp'' is required to bridge between R and C/C++
-3. Software programs are organized in projects and the structure of a project is determined by the R package functionality
+1. Development of C/C++ code using RStudio cannot be done without R. We also assume that fairly recent versions of R and RStudio are installed and available.
+2. The R packages `Rcpp` and `inline` are required to bridge between R and C/C++. Those packages can easily be installed using the function `install.packages(pkgs = c("Rcpp", "inline"))`. 
+3. Software programs are organized in projects and the structure of a project is determined by the R package functionality. But no further knowledge about R packages is required. The complete overhead that comes with R packages is hidden away by RStudio.
 
 
-# First Steps
+## Prerequisites
+To run a C++ program, a compiler must be installed on the machine that we want to run the program on. The basic installation of R does not come with a C++ compiler. Since compilers are platform-specific, each operating system platform has different requirements. On Linux, in most cases a C++ compiler is already pre-installed. On MacOs X, the command-line tools of XCode must be available. On Windows, we recommend to install the `Rtools` program. 
+
+
+## First Steps
 The easiest way to start a C/C++ - project with RStudio is to create a new R-package and thereby selecting the option ``with Rcpp''. 
 
 ![Package Type with Rcpp](PackageTypeWithRcpp.png)
 
-This automatically creates the directory "src" inside the project directory. Inside that "src" directory there are two files called "rcpp_hello.cpp" and "RcppExports.cpp". These files contain some "Hello-World" example code in C++. The content of "rcpp_hello.cpp" is shown below
+This automatically creates the directory `src` inside the project directory. Inside that `src` directory there are two files called `rcpp_hello.cpp` and `RcppExports.cpp`. These files contain some `Hello-World` example code in C++. The content of `rcpp_hello.cpp` is shown below
 
 ```{r, echo=FALSE, results='asis'}
 sHwCppFn <-  "../src/rcpp_hello.cpp"
@@ -81,18 +92,18 @@ showCppCode( psCppFn = sHwCppFn )
 ```
 
 
-## Call to rcpp_hello()
-The function "rcpp_hello()" can be called from the R console using the function "Rcpp::sourceCpp()" which makes the content of the source file "rcpp_hellp.cpp" available to the R system. Please note that in this document the variable "sHwCppFn" was assigned earlier to the name of the C++ source file which corresponds to `r sHwCppFn`. 
+### Call to rcpp_hello()
+The function `rcpp_hello()` can be called from the R console using the function `Rcpp::sourceCpp()` which makes the content of the source file `rcpp_hellp.cpp` available to the R system. Please note that in this document the variable `sHwCppFn` was assigned earlier to the name of the C++ source file which corresponds to `r sHwCppFn`. 
 
 ```{r RunRcppHello}
 Rcpp::sourceCpp(sHwCppFn)
 rcpp_hello()
 ```
 
-Alternatively, we can load the content of the whole R-package using function "load_all()" from package "devtools".
+Alternatively, we can load the content of the whole R-package using function `load_all()` from package `devtools`.
 
-# Create Your Own
-Running the "Hello World" example is fine at the beginning, but we are definitely aiming at something more interesting. We want to write our own functions. This can be done by adding a new ".cpp" file. New ".cpp" files can be added by clicking on "File > New > C++-File" as shown on the screen-shot below
+## Create Your Own
+Running the `Hello World` example is fine at the beginning, but we are definitely aiming at something more interesting. We want to write our own functions. This can be done by adding a new `.cpp` file. New `.cpp` files can be added by clicking on `File > New > C++-File` as shown on the screen-shot below
 
 ![New C++ File](NewCppFile.png)
 
@@ -102,14 +113,14 @@ This creates an empty file with an example function which looks as follows.
 showCppCode( psCppFn = "../src/rcpp_timestwo.cpp")
 ```
 
-The content of this file can be adjusted according to our needs. Then the file with the new C++ source code is saved under a different name. As an example, we can create a C++ function called "vecSquare(x)". The function "vecSquare(x)" computes the scalar square of its argument "x". This function might look as follows.
+The content of this file can be adjusted according to our needs. Then the file with the new C++ source code is saved under a different name. As an example, we can create a C++ function called `vecSquare(x)`. The function `vecSquare(x)` computes the scalar square of its argument `x`. This function might look as follows.
 
 ```{r, echo=FALSE, results='asis'}
 sVecSquareCppFn <- "../src/rcpp_vecSquare.cpp"
 showCppCode( psCppFn = sVecSquareCppFn )
 ```
 
-The following block of statement first sources the newly created cpp-function using Rcpp's function sourceCpp(). This immediately executes the R-statement at the end of the source file. calls function "vecSquare()" with two different arguments. As seen from the last statement in the following code block, the function vecSquare() also accepts a vector as an argument. 
+The following block of statement first sources the newly created cpp-function using Rcpp's function sourceCpp(). This immediately executes the R-statement at the end of the source file. calls function `vecSquare()` with two different arguments. As seen from the last statement in the following code block, the function vecSquare() also accepts a vector as an argument. 
 
 ```{r RunVecSquare}
 cat(" * Source file: ", sVecSquareCppFn, "\n")
@@ -117,10 +128,10 @@ Rcpp::sourceCpp(sVecSquareCppFn)
 vecSquare(c(1:3))
 ```
 
-# Seamless R and C++
+## Seamless R and C++
 In the following few sections, some of the material of the book E2013 is used to explain, how C++ code can be developed using RStudio and how this code can effectively be used from R.
 
-## Using inline - An even simpler method of integrating C++ code
+### Using inline - An even simpler method of integrating C++ code
 As mentioned in Section 1.2 of E2013,  the R-package __inline__ provides a wrapper around the compiling, linking and loading steps that are required when using externally compiled code in R. Package __inline__ provides function `cxxfunction()` as a single entry point to transform a character string into an executable function. How this works is shown below using the example of computing Fibonacci numbers. 
 
 ```{r CxxFib, eval=bOnLine}
@@ -148,7 +159,7 @@ Two arguments are supplied to function `cxxfunction()`
 
 Once the `cxxfunction()` has been run successfully, the resulting function `fibR` can be called like any other ordinary R-function. 
 
-## Using Rcpp attributes
+### Using Rcpp attributes
 The inline package is very convenient, as it allows to extend functionality by compiled code from within an R session. More recently, __inline__ has been complemented by a new approach that is based on an upcoming feature in the new C++ standard called the "attributes". As of version 0.10.0 of Rcpp, attributes are implemented internally. The only thing the programmer has to do, is to declare certain "attributes", notably whether a certain function has to be exported for use from R or from other C++ functions or both. 
 
 This approach of declaring attributes in C++ source files was already show at the beginning of this section. RStudio uses "Rcpp attributes" as its default method for making C++ source code available to R when a new source file is added via the RStudio menu "File > New File > C++ File". 
@@ -166,7 +177,7 @@ Rcpp::sourceCpp( file = "../src/fibonacci.cpp" )
 fibonacci(20)
 ```
 
-## A second solution to Fibonacci using memoization
+### A second solution to Fibonacci using memoization
 The problem with computing Fibonacci numbers with simple recursions is that many values are computed several times. The idea behind memoization is to store all values as soon as they are computed. New function values are taken from the memory, if they have been computed before. The following piece of code uses memoization for computing Fibonacci numbers. 
 
 ```{r FibCppMemo, eval=bOnLine}
