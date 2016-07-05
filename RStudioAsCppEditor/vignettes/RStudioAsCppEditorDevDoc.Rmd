@@ -6,7 +6,7 @@ output: rmarkdown::html_vignette
 ---
 
 ```{r DocumentSetup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, results = 'asis')
+knitr::opts_chunk$set(echo = TRUE, results = 'asis')
 ```
 
 ```{r ConnectionStatus, echo=FALSE,results='hide'}
@@ -52,7 +52,7 @@ On Linux there is Kdevelop coming with the KDE window manager. DevC++ is a very 
 
 Similarly to Eclipse, there exist C++ plugins for NetBeans which is the open source IDE originally developed by SUN and now distributed by Oracle.
 
-```{r NetBeansLogo, fig.show=TRUE}
+```{r NetBeansLogo, echo=FALSE, fig.show=TRUE}
 rmddochelper::insertOdgAsPng(psOdgFileStem = "NetBeansLogo")
 ```
 
@@ -201,7 +201,7 @@ public:
       return( (double) NAN );
     if (x >= (int) memo.size())
       throw std::range_error(\"x too large for implementation\");
-    if (! ::isnan(memo[x]))
+    if (! std::isnan(memo[x]))
       return(memo[x]); // if exist, reuse values
     // build precomputed value via recursion
     memo[x] = fibonacci(x-2) + fibonacci(x-1);
