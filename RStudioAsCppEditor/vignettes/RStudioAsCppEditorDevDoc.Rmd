@@ -13,17 +13,6 @@ knitr::opts_chunk$set(echo = TRUE, results = 'asis')
 bOnLine <- TRUE
 ```
 
-```{r Prereq, echo=FALSE,results='hide', eval=bOnLine}
-#sContribUrl <- "https://cran.rstudio.com/src/contrib"
-#vReqPack <- c("inline")
-#for (p in vReqPack){
-#  if (!require(p)){
-#    install.packages(pkgs = p, contriburl = sContribUrl)
-#    require(p)
-#  }
-#}
-require(inline)
-```
 
 ```{r HelperFunctions, echo=FALSE, results='hide'}
 showCppCode <- function(psCppFn){
@@ -44,11 +33,17 @@ C++ is a widely used compiled language. As in any other compiled language, softw
 ### Known IDEs for C++
 The choice of IDE can depend on the operating system on which the programs are written and executed. On Mac OS X, XCode is probably the most widely used IDE. 
 
-![Xcode Logo](XcodeLogo.png)
+```{r XcodeLogo, echo=FALSE, fig.show=TRUE}
+rmddochelper::insertOdgAsPng(psOdgFileStem = "XcodeLogo")
+```
+
 
 On Linux there is Kdevelop coming with the KDE window manager. DevC++ is a very convenient and light-weigt IDE on windows. Eclipse CDT is a version of Eclipse specially tailored for C++ development that can be used on any of the mentioned platforms. 
 
-![Eclipse Logo](EclipseLogo.png)
+```{r EclipseLogo, echo=FALSE, fig.show=TRUE}
+rmddochelper::insertOdgAsPng(psOdgFileStem = "EclipseLogo")
+```
+
 
 Similarly to Eclipse, there exist C++ plugins for NetBeans which is the open source IDE originally developed by SUN and now distributed by Oracle.
 
@@ -82,7 +77,10 @@ To run a C++ program, a compiler must be installed on the machine that we want t
 ## First Steps
 The easiest way to start a C/C++ - project with RStudio is to create a new R-package and thereby selecting the option ``with Rcpp''. 
 
-![Package Type with Rcpp](PackageTypeWithRcpp.png)
+```{r PackageTypeWithRcpp, echo=FALSE, fig.show=TRUE}
+rmddochelper::insertOdgAsPng(psOdgFileStem = "PackageTypeWithRcpp")
+```
+
 
 This automatically creates the directory `src` inside the project directory. Inside that `src` directory there are two files called `rcpp_hello.cpp` and `RcppExports.cpp`. These files contain some `Hello-World` example code in C++. The content of `rcpp_hello.cpp` is shown below
 
@@ -105,7 +103,10 @@ Alternatively, we can load the content of the whole R-package using function `lo
 ## Create Your Own
 Running the `Hello World` example is fine at the beginning, but we are definitely aiming at something more interesting. We want to write our own functions. This can be done by adding a new `.cpp` file. New `.cpp` files can be added by clicking on `File > New > C++-File` as shown on the screen-shot below
 
-![New C++ File](NewCppFile.png)
+```{r NewCppFile, echo=FALSE, fig.show=TRUE}
+rmddochelper::insertOdgAsPng(psOdgFileStem = "NewCppFile")
+```
+
 
 This creates an empty file with an example function which looks as follows.
 
@@ -129,6 +130,8 @@ vecSquare(c(1:3))
 ```
 
 ## Seamless R and C++
+Dirk Edelbuettel has written a monograph (E2013) on the package `Rcpp` which was already used in this post. In what follows some examples of that book are reproduced to illustrate how R can be extended using the C++ language. 
+
 In the following few sections, some of the material of the book E2013 is used to explain, how C++ code can be developed using RStudio and how this code can effectively be used from R.
 
 ### Using inline - An even simpler method of integrating C++ code
@@ -143,7 +146,7 @@ int cpp_fib(const int x){
 }
 '
 # above snippets is used in the follwing function definition
-fibR <- cxxfunction(signature(xs = "int"),
+fibR <- inline::cxxfunction(signature(xs = "int"),
                     plugin = "Rcpp",
                     incl = incltxt,
                     body = '
@@ -213,7 +216,7 @@ private:
 '
 ## now use the snippet above as well as one argument conversion
 ## in as well as out to provide Fibonacci numbers via C++
-mfibRcpp <- cxxfunction(signature(xs="int"),
+mfibRcpp <- inline::cxxfunction(signature(xs="int"),
                         plugin="Rcpp",
                         includes=mincltxt,
                         body='
@@ -246,7 +249,7 @@ solution in C++, again using the function `cxxfunction()` from package __inline_
 
 ```{r FibIter}
 ## linear / iterative solution
-fibRcppIter <- cxxfunction(signature(xs="int"),
+fibRcppIter <- inline::cxxfunction(signature(xs="int"),
                            plugin="Rcpp",
                            body='
   int n = Rcpp::as<int>(xs);
