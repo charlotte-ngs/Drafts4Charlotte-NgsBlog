@@ -1,0 +1,48 @@
+---
+title: "Recoding SNP-Genotypes"
+author: "Peter von Rohr"
+date: "5/30/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Disclaimer
+This post contains a few experiments in the area of data recoding using the tool of regular expressions. Regular expressions are a language that can be used for pattern matching in strings. We want to explore the tools of regular expressions for an example case of recoding SNP-genotype data.
+
+
+## Introduction
+SNP-Genotypes are typically encoded by either $-1$, $0$, $1$ or by $0$, $1$, $2$. The advantage of both of these encodings is that they can readily be used in statistical modelling. Furthermore, both encodings fit in principle into two bits per SNP-Genotype which is very efficient when it comes to requirements of disk space or of memory per fixed amount of SNP-data.
+
+
+## Experiments With Recoding
+There might be some reasons which are not explain further at this place, that alternative codings of SNP-Genotypes could be useful and needed. 
+
+
+### A first approach
+Because the original genotype codes are integer values, one might create an array where the indices of the array are a function of the original codes and the values contained in the array are the new codes. Let us call this array `recoding.map` and create the following example
+
+```{r RecodingMap}
+recoding.map <- c("AA", "AB", "BB")
+```
+
+Now we are ready to write a first recoding function, based on our recoding map. We call that function `map.recode()`. As input the function `map.recode()` gets the string with the original recoding, the recoding map and a shift value that relates the numeric values of the original code to the indices of the array `recoding.map`. A first draft of such a function might look as follows.
+
+```{r MapRecodingFunction}
+#' Recoding input data using a fixed and given map
+#'
+#' @param psOrigData data string with original coding
+#' @param pvRecodeMap vector representing the recoding map
+#' @param pnIdxShift numeric value that relates original codes to map indices
+#' @result 
+map.recode <- function(psOrigData, pvRecodeMap, pnIdxShift){
+  ### # convert psOrigData to a numeric vector
+  vecOrigData <- as.integer(unlist(strsplit(psOrigData, split = "")))
+  ### # return map values with vecOrigData + pnIdxShift as result
+  return(pvRecodeMap[vecOrigData+pnIdxShift])
+}
+```
+
+
