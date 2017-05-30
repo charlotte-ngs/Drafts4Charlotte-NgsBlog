@@ -21,7 +21,7 @@ SNP-Genotypes are typically encoded by either $-1$, $0$, $1$ or by $0$, $1$, $2$
 There might be some reasons which are not explain further at this place, that alternative codings of SNP-Genotypes could be useful and needed. 
 
 
-### A first approach
+### A first approach using a fixed map
 Because the original genotype codes are integer values, one might create an array where the indices of the array are a function of the original codes and the values contained in the array are the new codes. Let us call this array `recoding.map` and create the following example
 
 ```{r RecodingMap}
@@ -41,8 +41,31 @@ map.recode <- function(psOrigData, pvRecodeMap, pnIdxShift){
   ### # convert psOrigData to a numeric vector
   vecOrigData <- as.integer(unlist(strsplit(psOrigData, split = "")))
   ### # return map values with vecOrigData + pnIdxShift as result
-  return(pvRecodeMap[vecOrigData+pnIdxShift])
+  return(paste0(pvRecodeMap[vecOrigData+pnIdxShift], collapse = ""))
 }
 ```
 
+The above function can be tested using a small example. Using a simple string of zeroes ones and twos, we can recode this using the above function and our map.
 
+```{r TestMapRecodingSmall}
+set.seed(945)
+nNrSnpSmall <- 20
+test.String.small <- paste0(sample(c(0,1,2), nNrSnpSmall, replace = T), collapse = "")
+map.recode(psOrigData = test.String.small, pvRecodeMap = recoding.map, pnIdxShift = 1)
+```
+
+For the purpose of comparing efficiency of different approaches with respect to computing time, We want to use a larger test string which has about the number of SNP-genotypes of a complete genome.
+
+```{r TestMapRecodingGenome}
+nNrSnpGenome <- 20*10^6
+test.String.genome <- paste0(sample(c(0,1,2), nNrSnpGenome, replace = T), collapse = "")
+system.time(recoded.String.genome <- map.recode(psOrigData = test.String.genome, pvRecodeMap = recoding.map, pnIdxShift = 1))
+substr(test.String.genome, 1, 10)
+substr(recoded.String.genome,1,20)
+```
+
+
+### Regular expressions
+The approach using the map is very elegant, but the splitting of the string into a vector and the re-pasting of the result to a string again does take some resources. Furthermore, the reverse recoding cannot be done using the existing version of the function `map.recode()`. We would need to generalize the map into a list and then the same approach can be used again. 
+
+An alternative approach that uses regular expressions should be more efficient.
